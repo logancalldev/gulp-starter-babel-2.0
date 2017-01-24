@@ -113,6 +113,7 @@ gulp.task("watch", ["scripts", "styles"], () => {
 				},
 			},
 		],
+		port: 8181,
 		logPrefix: conf.vhost,
 		notify: false,
 		proxy: conf.vhost,
