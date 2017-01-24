@@ -1,18 +1,21 @@
 {
 	"vhost": "http://gulp:80",
 	"dist": "public/assets/",
+	"scripts": [
+		"source/scripts/*.js",
+		"source/scripts/**/*.js",
+		"source/scripts/**/**/*.js"
+	],
 	"sassIndex": "source/styles/index.scss",
 	"sassFilesToLint": [
-		"source/styles/**"
+		"source/styles/**",
+		"!source/styles/libs/**"
 	],
-	"typescriptsToLint": [
-		"source/scripts/*.ts",
-		"source/scripts/**/*.ts",
-		"!source/scripts/typings/*.ts",
-		"!source/scripts/typings/**/*.ts"
-	],
-	"scriptEntries": [
-		"source/scripts/index.ts"
+	"scriptsToLint": [
+		"source/scripts/*.js",
+		"source/scripts/**/*.js",
+		"source/scripts/**/**/*.js",
+		"!source/libs/**"
 	],
 	"watchedViews": [
 		"public/*.html"

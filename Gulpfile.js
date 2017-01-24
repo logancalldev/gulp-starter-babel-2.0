@@ -1,15 +1,11 @@
 const gulp = require("gulp");
-const browserify = require("browserify");
-const source = require("vinyl-source-stream");
-const tsify = require("tsify");
-const tslint = require("gulp-tslint");
 const gutil = require("gulp-util");
 const uglify = require("gulp-uglify");
 const sourcemaps = require("gulp-sourcemaps");
-const buffer = require("vinyl-buffer");
 const browserSync = require("browser-sync").create();
 const plumber = require("gulp-plumber");
 const sass = require("gulp-sass");
+const eslint = require('gulp-eslint');
 const rucksack = require("gulp-rucksack");
 const cssnano = require("gulp-cssnano");
 const rename = require("gulp-rename");
@@ -17,48 +13,38 @@ const postcss = require("gulp-postcss");
 const stylelint = require("stylelint");
 const reporter = require("postcss-reporter");
 const syntaxScss = require("postcss-scss");
-const typescriptConfig = require("./tsconfig.json"); 
-// config options – https://www.typescriptlang.org/docs/handbook/compiler-options.html
 const stylelintConfig = require("./.stylelintrc.json");
 const imagemin = require("gulp-imagemin");
 const conf = require("./config.json");
 const iconfont = require("gulp-iconfont");
 const consolidate = require("gulp-consolidate");
 const bust = require("gulp-cache-bust");
+const babel = require('gulp-babel');
+const eslintConfig = require('./.eslintrc.json')
 
-gulp.task("tslint", () =>
-	gulp.src(conf.typescriptsToLint)
+gulp.task("eslint", () => {
+	return gulp.src(conf.scriptsToLint)
 		.pipe(plumber(function (error) {
 			gutil.log(gutil.colors.red(error.message));
 			this.emit("end");
 		}))
-		.pipe(tslint({
-			configuration: "tslint.json",
-			formatter: "verbose",
-		}))
-		.pipe(tslint.report({
-			summarizeFailureOutput: true,
-		}))
-);
+		.pipe(eslint(eslintConfig))
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError());
+});
 
-gulp.task("scripts", ["tslint"], () => {
-	return browserify({
-		basedir: ".",
-		cache: {},
-		debug: true, // allows tsify to do sourcemaping 
-		entries: conf.scriptEntries,
-		packageCache: {},
-	})
-		.plugin(tsify, typescriptConfig)
-		.bundle()
+gulp.task("scripts", ["eslint"], () => {
+	return gulp.src(conf.scripts)
+		.pipe(babel({
+			presets: ["es2015", "stage-0"]
+		}))
 		.pipe(plumber(function (error) {
 			gutil.log(gutil.colors.red(error.message));
 			this.emit("end");
 		}))
-		.pipe(source("bundle.js"))
-		.pipe(buffer())
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
+		.pipe(rename("bundle.js"))
 		.pipe(bust())
 		.pipe(sourcemaps.write("./"))
 		.pipe(gulp.dest(conf.dist))
