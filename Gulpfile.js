@@ -47,7 +47,7 @@ gulp.task("scripts", ["eslint"], () => {
 		.pipe(rename("bundle.js"))
 		.pipe(bust())
 		.pipe(sourcemaps.write("./"))
-		.pipe(gulp.dest(conf.dist))
+		.pipe(gulp.dest(conf.dist + "js/"))
 		.pipe(browserSync.stream());
 });
 
@@ -78,10 +78,10 @@ gulp.task("styles", ["sass-lint"], () => {
 		.pipe(sass().on("error", sass.logError))
 		.pipe(rucksack({ autoprefixer: true }))
 		.pipe(cssnano())
-		.pipe(rename("bundle.css"))
+		.pipe(rename((path) => path.basename += ".min"))
 		.pipe(bust())
 		.pipe(sourcemaps.write())
-		.pipe(gulp.dest(conf.dist))
+		.pipe(gulp.dest(conf.dist + "css/"))
 		.pipe(browserSync.stream());
 });
 
@@ -113,7 +113,7 @@ gulp.task("images", () => {
 			progressive: true,
 			svgoPlugins: [{ removeUnknownsAndDefaults: false }, { cleanupIDs: false }]
 		}))
-		.pipe(gulp.dest(conf.dist));
+		.pipe(gulp.dest(conf.dist + "images/"));
 });
 
 // reference for svg setup: https://github.com/nfroidure/gulp-iconfont
@@ -124,7 +124,7 @@ gulp.task("iconfonts", () => {
 			this.emit("end");
 		}))
 		.pipe(iconfont({ fontName: "website-icons" }))
-		.on("glyphs", function (glyphs, options) {
+		.on("glyphs", function (glyphs) {
 			gulp.src("source/fonts/icons/iconfont.template")
 				.pipe(plumber(function (error) {
 					gutil.log(gutil.colors.red(error.message));
@@ -138,7 +138,7 @@ gulp.task("iconfonts", () => {
 					timestamp: Date.now(),
 				}))
 				.pipe(rename("iconfont.scss"))
-				.pipe(gulp.dest("source/styles/"));
+				.pipe(gulp.dest("source/styles/index/"));
 		})
 		.pipe(bust())
 		.pipe(gulp.dest(conf.dist + "fonts"));

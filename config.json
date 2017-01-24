@@ -4,18 +4,30 @@
 	"scripts": [
 		"source/scripts/*.js",
 		"source/scripts/**/*.js",
-		"source/scripts/**/**/*.js"
+		"source/scripts/**/**/*.js",
+		"!source/scripts/inline/**"
 	],
-	"sassIndex": "source/styles/index.scss",
-	"sassFilesToLint": [
-		"source/styles/**",
-		"!source/styles/libs/**"
+	"scriptsInline": [
+		"source/scripts/inline/*.js",
+		"source/scripts/inline/**/*.js",
+		"source/scripts/inline/**/**/*.js"
 	],
 	"scriptsToLint": [
 		"source/scripts/*.js",
 		"source/scripts/**/*.js",
 		"source/scripts/**/**/*.js",
+		"source/scripts/**/**/**/*.js",
 		"!source/libs/**"
+	],
+	"sassIndex": [
+		"source/styles/index.scss",
+		"source/styles/inline.scss",
+		"source/styles/wp-editor-styles.scss"
+	],
+	"sassFilesToLint": [
+		"source/styles/**",
+		"!source/styles/libs/**",
+		"!source/styles/index/iconfont.scss"
 	],
 	"watchedViews": [
 		"public/*.html"

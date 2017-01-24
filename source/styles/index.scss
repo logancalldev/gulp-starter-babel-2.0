@@ -1,7 +1,3 @@
 @import "../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
-
-body {
-	color: blue;
-
-	div { background: yellow; }
-}
+@import "index/wp-class-styles";
+@import "index/iconfont";
