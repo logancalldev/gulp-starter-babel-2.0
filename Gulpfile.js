@@ -33,7 +33,25 @@ gulp.task("eslint", () => {
 		.pipe(eslint.failAfterError());
 });
 
-gulp.task("scripts", ["eslint"], () => {
+gulp.task("scripts-inline", ["eslint"], () => {
+	return gulp.src(conf.scriptsInline)
+		.pipe(babel({
+			presets: ["es2015", "stage-0"]
+		}))
+		.pipe(plumber(function (error) {
+			gutil.log(gutil.colors.red(error.message));
+			this.emit("end");
+		}))
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.pipe(uglify())
+		.pipe(rename("inline.js"))
+		.pipe(bust())
+		.pipe(sourcemaps.write("./"))
+		.pipe(gulp.dest(conf.dist + "js/"))
+		.pipe(browserSync.stream());
+});
+
+gulp.task("scripts", ["scripts-inline"], () => {
 	return gulp.src(conf.scripts)
 		.pipe(babel({
 			presets: ["es2015", "stage-0"]
@@ -44,7 +62,7 @@ gulp.task("scripts", ["eslint"], () => {
 		}))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
-		.pipe(rename("bundle.js"))
+		.pipe(rename("index.js"))
 		.pipe(bust())
 		.pipe(sourcemaps.write("./"))
 		.pipe(gulp.dest(conf.dist + "js/"))
@@ -151,5 +169,3 @@ gulp.task("fonts", ["iconfonts"], () => {
 });
 
 gulp.task("default", ["images", "fonts", "watch"]);
-
-// add cache busting to css/js

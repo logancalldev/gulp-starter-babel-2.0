@@ -1,1 +1,0 @@
-{"version":3,"sources":["global.js"],"names":["$","document","ready"],"mappings":"AAAA,YAEAA,GAAEC,UAAUC,MAAM","file":"bundle.js","sourcesContent":["\"use strict\";\n\n$(document).ready(function () {\n\t// console.log(\"global.js is compiling\");\n});"]}
