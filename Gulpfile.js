@@ -20,7 +20,8 @@ const iconfont = require("gulp-iconfont");
 const consolidate = require("gulp-consolidate");
 const bust = require("gulp-cache-bust");
 const babel = require('gulp-babel');
-const eslintConfig = require('./.eslintrc.json')
+const eslintConfig = require('./.eslintrc.json');
+const concat = require("gulp-concat");
 
 gulp.task("eslint", () => {
 	return gulp.src(conf.scriptsToLint)
@@ -44,7 +45,7 @@ gulp.task("scripts-inline", ["eslint"], () => {
 		}))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
-		.pipe(rename("inline.js"))
+		.pipe(concat("inline.js"))
 		.pipe(bust())
 		.pipe(sourcemaps.write("./"))
 		.pipe(gulp.dest(conf.dist + "js/"))
@@ -62,7 +63,7 @@ gulp.task("scripts", ["scripts-inline"], () => {
 		}))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
-		.pipe(rename("index.js"))
+		.pipe(concat("index.js"))
 		.pipe(bust())
 		.pipe(sourcemaps.write("./"))
 		.pipe(gulp.dest(conf.dist + "js/"))
