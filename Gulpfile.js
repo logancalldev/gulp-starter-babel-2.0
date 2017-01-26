@@ -145,7 +145,10 @@ gulp.task("iconfonts", () => {
 			gutil.log(gutil.colors.red(error.message));
 			this.emit("end");
 		}))
-		.pipe(iconfont({ fontName: "website-icons" }))
+		.pipe(iconfont({
+			fontName: "website-icons",
+			timestamp: Date.now()
+		}))
 		.on("glyphs", function (glyphs) {
 			gulp.src("source/fonts/icons/iconfont.template")
 				.pipe(plumber(function (error) {
