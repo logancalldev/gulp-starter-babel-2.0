@@ -124,7 +124,7 @@ gulp.task("watch", ["scripts", "styles"], () => {
 	gulp.watch(["source/scripts/**"], ["scripts"]);
 	gulp.watch(["source/scripts/inline/**"], ["scripts"]).on("change", browserSync.reload);
 	gulp.watch(["source/styles/**"], ["styles"]);
-	gulp.watch(["source/styles/inline/**"], ["styles"]).on("change", browserSync.reload);
+	gulp.watch(["source/styles/inline/**", "source/styles/inline.scss"], ["styles"]).on("change", browserSync.reload);
 	gulp.watch([conf.watchedViews]).on("change", browserSync.reload);
 });
 
