@@ -160,7 +160,6 @@ gulp.task("iconfonts", () => {
 				.pipe(rename("iconfont.scss"))
 				.pipe(gulp.dest("source/styles/index/"));
 		})
-		.pipe(bust())
 		.pipe(gulp.dest(conf.dist + "fonts"));
 });
 
