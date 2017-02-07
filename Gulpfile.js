@@ -36,12 +36,12 @@ gulp.task("eslint", () => {
 
 gulp.task("scripts-inline", ["eslint"], () => {
 	return gulp.src(conf.scriptsInline)
-		.pipe(babel({
-			presets: ["es2015", "stage-0"]
-		}))
 		.pipe(plumber(function (error) {
 			gutil.log(gutil.colors.red(error.message));
 			this.emit("end");
+		}))
+		.pipe(babel({
+			presets: ["es2015", "stage-0"]
 		}))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
@@ -54,12 +54,12 @@ gulp.task("scripts-inline", ["eslint"], () => {
 
 gulp.task("scripts", ["scripts-inline"], () => {
 	return gulp.src(conf.scripts)
-		.pipe(babel({
-			presets: ["es2015", "stage-0"]
-		}))
 		.pipe(plumber(function (error) {
 			gutil.log(gutil.colors.red(error.message));
 			this.emit("end");
+		}))
+		.pipe(babel({
+			presets: ["es2015", "stage-0"]
 		}))
 		.pipe(sourcemaps.init({ loadMaps: true }))
 		.pipe(uglify())
