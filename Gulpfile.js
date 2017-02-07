@@ -52,7 +52,7 @@ gulp.task("scripts-inline", ["eslint"], () => {
 		.pipe(browserSync.stream());
 });
 
-gulp.task("scripts", ["scripts-inline"], () => {
+gulp.task("scripts", ["eslint"], () => {
 	return gulp.src(conf.scripts)
 		.pipe(plumber(function (error) {
 			gutil.log(gutil.colors.red(error.message));
@@ -98,7 +98,7 @@ gulp.task("styles", ["sass-lint"], () => {
 		.pipe(rucksack({ autoprefixer: true }))
 		.pipe(cssnano())
 		.pipe(rename((path) => path.basename += ".min"))
-		.pipe(bust())
+		// .pipe(bust())
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(conf.dist + "css/"))
 		.pipe(browserSync.stream());
@@ -116,14 +116,14 @@ gulp.task("watch", ["scripts", "styles"], () => {
 		],
 		port: 8181,
 		logPrefix: conf.vhost,
-		notify: false,
+		notify: true,
 		proxy: conf.vhost,
 		reloadOnRestart: true,
 	});
 
-	gulp.watch(["source/scripts/**"], ["scripts"]);
+	gulp.watch(["source/scripts/**", "!source/scripts/inline/**"], ["scripts"]);
 	gulp.watch(["source/scripts/inline/**"], ["scripts"]).on("change", browserSync.reload);
-	gulp.watch(["source/styles/**"], ["styles"]);
+	gulp.watch(["source/styles/**", "!source/styles/inline/**"], ["styles"]);
 	gulp.watch(["source/styles/inline/**", "source/styles/inline.scss"], ["styles"]).on("change", browserSync.reload);
 	gulp.watch([conf.watchedViews]).on("change", browserSync.reload);
 });
@@ -140,7 +140,7 @@ gulp.task("images", () => {
 
 // reference for svg setup: https://github.com/nfroidure/gulp-iconfont
 gulp.task("iconfonts", () => {
-	return gulp.src("source/fonts/icons/svg/**")
+	return gulp.src("source/fonts/icons/svg/*.svg")
 		.pipe(plumber(function (error) {
 			gutil.log(gutil.colors.red(error.message));
 			this.emit("end");
@@ -149,7 +149,7 @@ gulp.task("iconfonts", () => {
 			fontName: "website-icons",
 			timestamp: Date.now()
 		}))
-		.on("glyphs", function (glyphs) {
+		.on("glyphs", function (glyphs, options) {
 			gulp.src("source/fonts/icons/iconfont.template")
 				.pipe(plumber(function (error) {
 					gutil.log(gutil.colors.red(error.message));
