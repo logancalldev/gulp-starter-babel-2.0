@@ -124,7 +124,11 @@ gulp.task("watch", ["scripts", "styles"], () => {
 	gulp.watch(["source/scripts/**", "!source/scripts/inline/**"], ["scripts"]);
 	gulp.watch(["source/scripts/inline/**"], ["scripts"]).on("change", browserSync.reload);
 	gulp.watch(["source/styles/**", "!source/styles/inline/**"], ["styles"]);
-	gulp.watch(["source/styles/inline/**", "source/styles/inline.scss"], ["styles"]).on("change", browserSync.reload);
+	gulp.watch(["source/styles/inline/**", "source/styles/inline.scss"], ["styles"]).on("change", () => {
+		setTimeout(() => {
+			browserSync.reload();
+		}, 500);
+	});
 	gulp.watch([conf.watchedViews]).on("change", browserSync.reload);
 });
 
