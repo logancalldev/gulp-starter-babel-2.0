@@ -33,23 +33,6 @@ gulp.task("eslint", () => {
 		.pipe(eslint.failAfterError());
 });
 
-gulp.task("scripts-inline", ["eslint"], () => {
-	return gulp.src(conf.scriptsInline)
-		.pipe(plumber(function (error) {
-			gutil.log(gutil.colors.red(error.message));
-			this.emit("end");
-		}))
-		.pipe(babel({
-			presets: ["es2015", "stage-0"]
-		}))
-		.pipe(sourcemaps.init({ loadMaps: true }))
-		.pipe(uglify())
-		.pipe(concat("inline.js"))
-		.pipe(bust())
-		.pipe(sourcemaps.write("./"))
-		.pipe(gulp.dest(conf.dist + "js/"))
-		.pipe(browserSync.stream());
-});
 
 gulp.task("scripts", ["eslint"], () => {
 	return gulp.src(conf.scripts)
@@ -120,14 +103,8 @@ gulp.task("watch", ["scripts", "styles"], () => {
 		reloadOnRestart: true,
 	});
 
-	gulp.watch(["source/scripts/**", "!source/scripts/inline/**"], ["scripts"]);
-	gulp.watch(["source/scripts/inline/**"], ["scripts"]).on("change", browserSync.reload);
-	gulp.watch(["source/styles/**", "!source/styles/inline/**"], ["styles"]);
-	gulp.watch(["source/styles/inline/**", "source/styles/inline.scss"], ["styles"]).on("change", () => {
-		setTimeout(() => {
-			browserSync.reload();
-		}, 500);
-	});
+	gulp.watch(["source/scripts/**"], ["scripts"]);
+	gulp.watch(["source/styles/**"], ["styles"]);
 	gulp.watch([conf.watchedViews]).on("change", browserSync.reload);
 });
 

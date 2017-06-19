@@ -1,16 +1,10 @@
 {
-	"vhost": "http://gulp:80",
+	"vhost": "http://virtualhost.dev",
 	"dist": "public/assets/",
 	"scripts": [
 		"source/scripts/*.js",
 		"source/scripts/**/*.js",
-		"source/scripts/**/**/*.js",
-		"!source/scripts/inline/**"
-	],
-	"scriptsInline": [
-		"source/scripts/inline/*.js",
-		"source/scripts/inline/**/*.js",
-		"source/scripts/inline/**/**/*.js"
+		"source/scripts/**/**/*.js"
 	],
 	"scriptsToLint": [
 		"source/scripts/*.js",
@@ -20,9 +14,7 @@
 		"!source/libs/**"
 	],
 	"sassIndex": [
-		"source/styles/index.scss",
-		"source/styles/inline.scss",
-		"source/styles/wp-editor-styles.scss"
+		"source/styles/index.scss"
 	],
 	"sassFilesToLint": [
 		"source/styles/**",
