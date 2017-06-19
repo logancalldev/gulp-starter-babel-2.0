@@ -16,7 +16,6 @@ const syntaxScss = require("postcss-scss");
 const stylelintConfig = require("./.stylelintrc.json");
 const imagemin = require("gulp-imagemin");
 const conf = require("./config.json");
-const iconfont = require("gulp-iconfont");
 const consolidate = require("gulp-consolidate");
 const bust = require("gulp-cache-bust");
 const babel = require('gulp-babel');
@@ -142,37 +141,7 @@ gulp.task("images", () => {
 		.pipe(gulp.dest(conf.dist + "images/"));
 });
 
-// reference for svg setup: https://github.com/nfroidure/gulp-iconfont
-gulp.task("iconfonts", () => {
-	return gulp.src("source/fonts/icons/svg/*.svg")
-		.pipe(plumber(function (error) {
-			gutil.log(gutil.colors.red(error.message));
-			this.emit("end");
-		}))
-		.pipe(iconfont({
-			fontName: "website-icons",
-			timestamp: Date.now()
-		}))
-		.on("glyphs", function (glyphs, options) {
-			gulp.src("source/fonts/icons/iconfont.template")
-				.pipe(plumber(function (error) {
-					gutil.log(gutil.colors.red(error.message));
-					this.emit("end");
-				}))
-				.pipe(consolidate("lodash", {
-					className: "icon",
-					fontName: "website-icons",
-					fontPath: "../fonts/",
-					glyphs: glyphs,
-					timestamp: Date.now(),
-				}))
-				.pipe(rename("iconfont.scss"))
-				.pipe(gulp.dest("source/styles/index/"));
-		})
-		.pipe(gulp.dest(conf.dist + "fonts"));
-});
-
-gulp.task("fonts", ["iconfonts"], () => {
+gulp.task("fonts", () => {
 	// in case we have other font libraries that need to be but in assets... put them here and then they'll get copied over
 	return gulp.src("source/fonts/vendor/**")
 		.pipe(gulp.dest(conf.dist + "fonts"));

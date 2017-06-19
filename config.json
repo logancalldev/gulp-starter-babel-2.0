@@ -26,8 +26,7 @@
 	],
 	"sassFilesToLint": [
 		"source/styles/**",
-		"!source/styles/libs/**",
-		"!source/styles/index/iconfont.scss"
+		"!source/styles/libs/**"
 	],
 	"watchedViews": [
 		"public/*.html"
