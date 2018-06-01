@@ -1,5 +1,7 @@
 # Yarn, Gulp, Babel, BrowserSync, Sass, Cachebusting, Linting
 
+>This is no longer maintained.
+
 ## Get Started
 1. Make sure you have the following npm modules installed globally
 	* yarn
